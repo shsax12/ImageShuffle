@@ -31,11 +31,11 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = 'imageshuffle.Launcher'
+mainClassName = 'imageshuffle.Main'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'imageshuffle.Launcher'
+        attributes 'Main-Class': 'imageshuffle.Main'
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

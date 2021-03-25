@@ -24,41 +24,48 @@ public class ControllerOutput extends ControllerAbstract implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourcebundle) {
-        next(new ActionEvent());
+        imgDisplay();
+    }
+
+    private void imgDisplay() {
+        try {
+            File imgFile = fileList[countNext/2];
+            Image image = new Image(imgFile.toURI().toURL().toString());
+            imgView.setImage(image);
+            imgText.setText("");
+        } catch (MalformedURLException ex) {
+            mainInst.printDialog("error", "予期しないエラーが発生しました。");
+            logger.error("unexpected error.", ex);
+        }
     }
 
     @FXML
     public void next(ActionEvent event) {
+        countNext++;
+
         int idx = countNext / 2;
 
         if (idx > fileList.length-1) {
             imgView.setImage(null);
-            imgText.setText("Finished!");
+            imgText.setText("");
+            mainInst.printDialog("information", "テスト終了です。");
             return;
         }
 
-        int regIdx = registered(fileList[idx].getName());
-
+        //画像のみ表示
         if (countNext % 2 == 0) {
-            //画像のみ表示
-            try {
-                File imgFile = fileList[idx];
-                Image image = new Image(imgFile.toURI().toURL().toString());
-                imgView.setImage(image);
-                imgText.setText("");
-            } catch (MalformedURLException ex) {
-                ex.printStackTrace();
-            }
+            imgDisplay();
+        //テキストも表示
         } else {
-            //テキストも表示
-            if (regIdx == -1) {
+            int regIndex = registered(fileList[idx].getName());
+
+            if (regIndex == -1) {
                 imgText.setText("未登録");
             } else {
-                imgText.setText(dataList.get(regIdx).text);
+                imgText.setText(dataList.get(regIndex).getText());
                 imgText.setAlignment(Pos.CENTER);
             }
         }
-        countNext++;
     }
 
     @FXML

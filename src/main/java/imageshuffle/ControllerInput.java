@@ -23,11 +23,30 @@ public class ControllerInput extends ControllerAbstract implements Initializable
 
     private int countNext = 0;
 
+    private int regIndex;
+
     private List<Dataset> dataListCopy = new ArrayList<>(dataList);
 
     @Override
     public void initialize(URL url, ResourceBundle resourcebundle) {
         imgDisplay();
+    }
+
+    private void imgDisplay() {
+        try {
+            Image image = new Image(fileList[countNext].toURI().toURL().toString());
+            imgView.setImage(image);
+        } catch (MalformedURLException ex) {
+            mainInst.printDialog("error", "予期しないエラーが発生しました。");
+            logger.error("unexpected error.", ex);
+        }
+
+        regIndex = registered(fileList[countNext].getName());
+        if (regIndex == -1) {
+            imgText.clear();
+        } else {
+            imgText.setText(dataList.get(regIndex).getText());
+        }
     }
 
     @FXML
@@ -37,17 +56,18 @@ public class ControllerInput extends ControllerAbstract implements Initializable
         //データ登録
         if (countNext <= fileList.length) {
             String s = imgText.getText();
-            int regIdx = registered(fileList[countNext-1].getName());
 
-            if (regIdx == -1) { //未登録の場合
+            //未登録の場合
+            if (regIndex == -1) {
                 Dataset dataset = new Dataset();
-                dataset.image = fileList[countNext-1];
-                dataset.text = s;
-                dataset.fileName = fileList[countNext-1].getName();
+                dataset.setImage(fileList[countNext-1]);
+                dataset.setText(s);
+                dataset.setFileName(fileList[countNext-1].getName());
                 dataListCopy.add(dataset);
                 mainInst.setDataList(dataListCopy);
-            } else if (!dataList.get(regIdx).text.equals(s)) { //テキストが異なる場合
-                dataListCopy.get(regIdx).text = s;
+            //テキストが異なる場合
+            } else if (!dataList.get(regIndex).getText().equals(s)) {
+                dataListCopy.get(regIndex).setText(s);
                 mainInst.setDataList(dataListCopy);
             }
         }
@@ -59,23 +79,8 @@ public class ControllerInput extends ControllerAbstract implements Initializable
 
         if (countNext >= fileList.length) {
             imgView.setImage(null);
-            imgText.setText("That's all!");
-        }
-    }
-
-    private void imgDisplay() {
-        try {
-            Image image = new Image(fileList[countNext].toURI().toURL().toString());
-            imgView.setImage(image);
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-        }
-
-        int regIdx = registered(fileList[countNext].getName());
-        if(regIdx == -1) {
             imgText.clear();
-        } else {
-            imgText.setText(dataList.get(regIdx).text);
+            mainInst.printDialog("information", "全ての画像を読み込みました。");
         }
     }
 

@@ -52,9 +52,8 @@ public class Main extends Application {
     private List<Dataset> dataRead() {
         List<Dataset> dataList = new ArrayList<>();
 
-        try {
-            ObjectInputStream ois = new ObjectInputStream(
-                    new FileInputStream(HOME + "/image-shuffle/datalist.obj"));
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(HOME + "/image-shuffle/datalist.obj"))) {
             dataList = (List<Dataset>) ois.readObject();
         } catch (FileNotFoundException ex) {
             printDialog("information", "登録済みデータはありません。");
@@ -71,23 +70,12 @@ public class Main extends Application {
     }
 
     public void dataWrite(List datalist) {
-        ObjectOutputStream oos = null;
-
-        try {
-            oos = new ObjectOutputStream(
-                    new FileOutputStream(HOME + "/image-shuffle/datalist.obj"));
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(HOME + "/image-shuffle/datalist.obj"))) {
             oos.writeObject(datalist);
         } catch (IOException ex) {
             printDialog("error", "予期しないエラーが発生しました。");
             logger.error("unexpected error.", ex);
-        } finally {
-            try {
-                oos.flush();
-                oos.close();
-            } catch (IOException ex) {
-                printDialog("error", "予期しないエラーが発生しました。");
-                logger.error("unexpected error.", ex);
-            }
         }
     }
 

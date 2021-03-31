@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Main extends Application {
@@ -34,7 +36,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         singleton = this;
 
-        dataList = dataRead();
+        dataList = dataRead(HOME + "/image-shuffle/datalist.obj");
         File imgDir = new File(HOME + "/image-shuffle/image");
         fileList = imgDir.listFiles(filter);
 
@@ -49,11 +51,10 @@ public class Main extends Application {
         }
     }
 
-    private List<Dataset> dataRead() {
+    private List<Dataset> dataRead(String filePath) {
         List<Dataset> dataList = new ArrayList<>();
 
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(HOME + "/image-shuffle/datalist.obj"))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
             dataList = (List<Dataset>) ois.readObject();
         } catch (FileNotFoundException ex) {
             printDialog("information", "登録済みデータはありません。");
@@ -69,9 +70,8 @@ public class Main extends Application {
         return dataList;
     }
 
-    public void dataWrite(List datalist) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream(HOME + "/image-shuffle/datalist.obj"))) {
+    public void dataWrite(List datalist, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(datalist);
         } catch (IOException ex) {
             printDialog("error", "予期しないエラーが発生しました。");
@@ -115,6 +115,24 @@ public class Main extends Application {
         dialog.showAndWait();
     }
 
+    public void shuffleFileList() {
+        List<File> list = new ArrayList<>(Arrays.asList(fileList));
+        Collections.shuffle(list);
+        File[] flist = list.toArray(new File[list.size()]);
+        fileList = flist;
+    }
+
+    public int registered(String filename, List<Dataset> dataList) {
+        int i = 0;
+        for (Dataset data : dataList) {
+            if (data.getFileName().equals(filename)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     public List<Dataset> getDataList() {
         return dataList;
     }
@@ -125,10 +143,6 @@ public class Main extends Application {
 
     public File[] getFileList() {
         return fileList;
-    }
-
-    public void setFileList(File[] fileList) {
-        this.fileList = fileList;
     }
 
     public static Main getInstance() {

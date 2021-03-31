@@ -41,7 +41,7 @@ public class ControllerInput extends ControllerAbstract implements Initializable
             logger.error("unexpected error.", ex);
         }
 
-        regIndex = registered(fileList[countNext].getName());
+        regIndex = mainInst.registered(fileList[countNext].getName(), dataList);
         if (regIndex == -1) {
             imgText.clear();
         } else {
@@ -87,7 +87,8 @@ public class ControllerInput extends ControllerAbstract implements Initializable
     @FXML
     @Override
     public void toTop(ActionEvent event) {
-        mainInst.dataWrite(dataListCopy);
+        mainInst.dataWrite(dataListCopy,
+                System.getProperty("user.home") + "/image-shuffle/datalist.obj");
         setTopPage();
     }
 }

@@ -57,7 +57,7 @@ public class ControllerOutput extends ControllerAbstract implements Initializabl
             imgDisplay();
         //テキストも表示
         } else {
-            int regIndex = registered(fileList[idx].getName());
+            int regIndex = mainInst.registered(fileList[idx].getName(), dataList);
 
             if (regIndex == -1) {
                 imgText.setText("未登録");

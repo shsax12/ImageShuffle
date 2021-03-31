@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class ControllerAbstract {
 
@@ -17,23 +18,15 @@ public abstract class ControllerAbstract {
 
     public ControllerAbstract() {
         mainInst = Main.getInstance();
-        dataList = mainInst.getDataList();
-        fileList = mainInst.getFileList();
+
+        if (Objects.nonNull(mainInst)) {
+            dataList = mainInst.getDataList();
+            fileList = mainInst.getFileList();
+        }
     }
 
     protected void setTopPage() {
         mainInst.setPage("/top.fxml", "トップページ");
-    }
-
-    protected int registered(String filename) {
-        int i = 0;
-        for (Dataset data : dataList) {
-            if (data.getFileName().equals(filename)) {
-                return i;
-            }
-            i++;
-        }
-        return -1;
     }
 
     public abstract void toTop(ActionEvent event);

@@ -87,8 +87,10 @@ public class ControllerInput extends ControllerAbstract implements Initializable
     @FXML
     @Override
     public void toTop(ActionEvent event) {
+        //トップページに戻るときにdatalistをファイルに出力する
         mainInst.dataWrite(dataListCopy,
                 System.getProperty("user.home") + "/image-shuffle/datalist.obj");
+
         setTopPage();
     }
 }

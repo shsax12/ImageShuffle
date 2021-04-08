@@ -3,10 +3,13 @@ package imageshuffle;
 import java.io.File;
 import java.io.Serializable;
 
+/**
+ * 画像ファイルとテキストの対応を持つクラス
+ */
 public class Dataset implements Serializable {
-    private File image;
-    private String text;
-    private String fileName;
+    private File image; //画像ファイル
+    private String text; //対応するテキスト
+    private String fileName; //画像ファイル名
 
     public void setImage(File image) {
         this.image = image;

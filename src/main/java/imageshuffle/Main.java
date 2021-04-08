@@ -23,10 +23,8 @@ public class Main extends Application {
     private Parent root;
     private Stage stage;
 
-    //画像＆テキストのセット
-    private List<Dataset> dataList = new ArrayList<>();
-    //指定ディレクトリにある画像ファイル
-    private File[] fileList;
+    private List<Dataset> dataList = new ArrayList<>(); //画像＆テキストのセット
+    private File[] fileList; //指定ディレクトリにある画像ファイル
 
     private final String HOME = System.getProperty("user.home");
 
@@ -51,6 +49,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * 既存のdatalistファイルを読み込む
+     * @param filePath datalistファイルのパス
+     * @return Dataset型のList
+     */
     private List<Dataset> dataRead(String filePath) {
         List<Dataset> dataList = new ArrayList<>();
 
@@ -70,6 +73,11 @@ public class Main extends Application {
         return dataList;
     }
 
+    /**
+     * datalistをファイルに出力する
+     * @param datalist 出力するdatalist
+     * @param filePath 出力するファイルパス
+     */
     public void dataWrite(List datalist, String filePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(datalist);
@@ -93,6 +101,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * アラートのダイアログを表示する
+     * @param alertType アラートレベル
+     * @param message 表示するメッセージ
+     */
     public void printDialog(String alertType, String message) {
         Alert dialog;
 
@@ -122,6 +135,12 @@ public class Main extends Application {
         fileList = flist;
     }
 
+    /**
+     * 画像ファイルが既存のdatalistに含まれているかを確認する
+     * @param filename 画像ファイル名
+     * @param dataList 既存のdatalist
+     * @return 含まれている場合のdatalistのindex
+     */
     public int registered(String filename, List<Dataset> dataList) {
         int i = 0;
         for (Dataset data : dataList) {

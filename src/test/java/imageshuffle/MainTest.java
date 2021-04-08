@@ -25,7 +25,14 @@ public class MainTest {
         assertThat(dataList.get(1).getText(), is("training"));
     }
 
+    /**
+     * テスト用のdatalistファイルを読み込む
+     * @param target Mainクラスのインスタンス
+     * @return Dataset型のList
+     * @throws Exception
+     */
     private List<Dataset> testDataListRead(Main target) throws Exception {
+        //privateメソッド（dataRead）を呼び出す
         Method method = Main.class.getDeclaredMethod("dataRead", String.class);
         method.setAccessible(true);
         List<Dataset> dataList = (List<Dataset>)method.invoke(target,

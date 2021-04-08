@@ -12,7 +12,7 @@ public class ControllerTop extends ControllerAbstract {
 
     @FXML
     public void toOutput(ActionEvent event) {
-        mainInst.shuffleFileList();
+        mainInst.shuffleFileList(); //確認テストでは出力順を毎回ランダムにする
         mainInst.setPage("/output.fxml", "テスト");
     }
 

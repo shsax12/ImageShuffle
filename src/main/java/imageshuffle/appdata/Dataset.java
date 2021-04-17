@@ -1,10 +1,10 @@
-package imageshuffle;
+package imageshuffle.appdata;
 
 import java.io.File;
 import java.io.Serializable;
 
 /**
- * 画像ファイルとテキストの対応を持つクラス
+ * 画像とテキストの対応を持つクラス
  */
 public class Dataset implements Serializable {
     private File image; //画像ファイル

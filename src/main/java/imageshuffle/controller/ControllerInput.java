@@ -1,5 +1,7 @@
-package imageshuffle;
+package imageshuffle.controller;
 
+import imageshuffle.appdata.Dataset;
+import imageshuffle.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,9 +11,6 @@ import javafx.scene.image.ImageView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerInput extends ControllerAbstract implements Initializable {
@@ -25,8 +24,6 @@ public class ControllerInput extends ControllerAbstract implements Initializable
 
     private int regIndex;
 
-    private List<Dataset> dataListCopy = new ArrayList<>(dataList);
-
     @Override
     public void initialize(URL url, ResourceBundle resourcebundle) {
         imgDisplay();
@@ -34,18 +31,18 @@ public class ControllerInput extends ControllerAbstract implements Initializable
 
     private void imgDisplay() {
         try {
-            Image image = new Image(fileList[countNext].toURI().toURL().toString());
+            Image image = new Image(imageFileList.get(countNext).toURI().toURL().toString());
             imgView.setImage(image);
         } catch (MalformedURLException ex) {
-            mainInst.printDialog("error", "予期しないエラーが発生しました。");
+            Util.printDialog("error", "予期しないエラーが発生しました。");
             logger.error("unexpected error.", ex);
         }
 
-        regIndex = mainInst.registered(fileList[countNext].getName(), dataList);
+        regIndex = datasets.datasetRegistered(imageFileList.get(countNext).getName(), datasetList);
         if (regIndex == -1) {
             imgText.clear();
         } else {
-            imgText.setText(dataList.get(regIndex).getText());
+            imgText.setText(datasetList.get(regIndex).getText());
         }
     }
 
@@ -54,43 +51,40 @@ public class ControllerInput extends ControllerAbstract implements Initializable
         countNext++;
 
         //データ登録
-        if (countNext <= fileList.length) {
-            String s = imgText.getText();
+        if (countNext <= imageFileList.size()) {
+            String inputText = imgText.getText();
 
             //未登録の場合
             if (regIndex == -1) {
                 Dataset dataset = new Dataset();
-                dataset.setImage(fileList[countNext-1]);
-                dataset.setText(s);
-                dataset.setFileName(fileList[countNext-1].getName());
-                dataListCopy.add(dataset);
-                mainInst.setDataList(dataListCopy);
+                dataset.setImage(imageFileList.get(countNext-1));
+                dataset.setText(inputText);
+                dataset.setFileName(imageFileList.get(countNext-1).getName());
+                datasetList.add(dataset);
             //テキストが異なる場合
-            } else if (!dataList.get(regIndex).getText().equals(s)) {
-                dataListCopy.get(regIndex).setText(s);
-                mainInst.setDataList(dataListCopy);
+            } else if (!datasetList.get(regIndex).getText().equals(inputText)) {
+                datasetList.get(regIndex).setText(inputText);
             }
         }
 
         //データ表示
-        if (countNext < fileList.length) {
+        if (countNext < imageFileList.size()) {
             imgDisplay();
         }
 
-        if (countNext >= fileList.length) {
+        if (countNext >= imageFileList.size()) {
             imgView.setImage(null);
             imgText.clear();
-            mainInst.printDialog("information", "全ての画像を読み込みました。");
+            Util.printDialog("information", "全ての画像を読み込みました。");
         }
     }
 
     @FXML
     @Override
     public void toTop(ActionEvent event) {
-        //トップページに戻るときにdatalistをファイルに出力する
-        mainInst.dataWrite(dataListCopy,
-                System.getProperty("user.home") + "/image-shuffle/datalist.obj");
-
+        //トップページに戻るときにdatasetlistをファイルに出力する
+        datasets.writeDatasetListFile(datasetList,
+                System.getProperty("user.home") + "/image-shuffle/datasetlist.obj");
         setTopPage();
     }
 }

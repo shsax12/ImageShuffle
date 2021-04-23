@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 画像とテキストのデータリストを扱うクラス
  */
-public class DatasetList {
+public class DatasetList implements DatasetListInterface {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -20,6 +20,7 @@ public class DatasetList {
      * @param datasetListFilePath datasetlistファイルのパス
      * @return Dataset型のList
      */
+    @Override
     public List<Dataset> readDatasetListFile(String datasetListFilePath) {
         List<Dataset> datasetList = new ArrayList<>();
 
@@ -44,7 +45,8 @@ public class DatasetList {
      * @param datasetlist 出力するdatasetlist
      * @param datasetListFilePath 出力するファイルパス
      */
-    public void writeDatasetListFile(List datasetlist, String datasetListFilePath) {
+    @Override
+    public void writeDatasetListFile(List<Dataset> datasetlist, String datasetListFilePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(datasetListFilePath))) {
             oos.writeObject(datasetlist);
         } catch (IOException ex) {
@@ -59,6 +61,7 @@ public class DatasetList {
      * @param datasetList 既存のdatasetlist
      * @return 含まれている場合のdatasetlistのindex
      */
+    @Override
     public int datasetRegistered(String imgFileName, List<Dataset> datasetList) {
         int i = 0;
         for (Dataset dataset : datasetList) {

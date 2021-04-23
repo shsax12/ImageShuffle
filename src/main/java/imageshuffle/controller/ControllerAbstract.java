@@ -11,8 +11,8 @@ import java.util.List;
 
 public abstract class ControllerAbstract {
 
-    protected DatasetList datasets = new DatasetList();
-    protected ImageFileList imageFiles = new ImageFileList();
+    protected DatasetListInterface datasets = new DatasetList();
+    protected ImageFileListInterface imageFiles = new ImageFileList();
 
     protected List<Dataset> datasetList;
     protected List<File> imageFileList;

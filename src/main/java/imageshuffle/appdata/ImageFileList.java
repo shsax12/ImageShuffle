@@ -17,6 +17,7 @@ public class ImageFileList implements ImageFileListInterface {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Override
     public List<File> getImageFileList(String imgDirPath) {
         File imgDir = new File(imgDirPath);
         File[] imageFileArray = imgDir.listFiles(filter);

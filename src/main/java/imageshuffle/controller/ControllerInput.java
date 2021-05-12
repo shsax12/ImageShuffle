@@ -5,6 +5,7 @@ import imageshuffle.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +20,8 @@ public class ControllerInput extends ControllerAbstract implements Initializable
     private ImageView imgView;
     @FXML
     private TextField imgText;
+    @FXML
+    private Label imgNo;
 
     private int countNext = 0;
 
@@ -33,6 +36,7 @@ public class ControllerInput extends ControllerAbstract implements Initializable
         try {
             Image image = new Image(imageFileList.get(countNext).toURI().toURL().toString());
             imgView.setImage(image);
+            imgNo.setText((countNext + 1) + "/" + imageFileList.size());
         } catch (MalformedURLException ex) {
             Util.printDialog("error", "予期しないエラーが発生しました。");
             logger.error("unexpected error.", ex);
@@ -44,6 +48,19 @@ public class ControllerInput extends ControllerAbstract implements Initializable
         } else {
             imgText.setText(datasetList.get(regIndex).getText());
         }
+    }
+
+    @FXML
+    public void back(ActionEvent event) {
+        countNext--;
+
+        if (countNext < 0) {
+            Util.printDialog("information", "最初の画像です。");
+            countNext = 0;
+            return;
+        }
+
+        imgDisplay();
     }
 
     @FXML
@@ -75,7 +92,9 @@ public class ControllerInput extends ControllerAbstract implements Initializable
         if (countNext >= imageFileList.size()) {
             imgView.setImage(null);
             imgText.clear();
+            imgNo.setText("");
             Util.printDialog("information", "全ての画像を読み込みました。");
+            countNext = imageFileList.size();
         }
     }
 
@@ -84,7 +103,7 @@ public class ControllerInput extends ControllerAbstract implements Initializable
     public void toTop(ActionEvent event) {
         //トップページに戻るときにdatasetlistをファイルに出力する
         datasets.writeDatasetListFile(datasetList,
-                System.getProperty("user.home") + "/image-shuffle/datasetlist.obj");
+                System.getProperty("user.home") + "/image-shuffle/" + ControllerTop.genreChoice + "/datasetlist.obj");
         setTopPage();
     }
 }

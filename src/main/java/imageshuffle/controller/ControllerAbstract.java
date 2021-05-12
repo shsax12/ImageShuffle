@@ -22,8 +22,11 @@ public abstract class ControllerAbstract {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     public ControllerAbstract() {
-        datasetList = datasets.readDatasetListFile(HOME + "/image-shuffle/datasetlist.obj");
-        imageFileList = imageFiles.getImageFileList(HOME + "/image-shuffle/image");
+        //genreChoiceがnullでないことは確認済み
+        datasetList = datasets.readDatasetListFile(
+                HOME + "/image-shuffle/" + ControllerTop.genreChoice +  "/datasetlist.obj");
+        imageFileList = imageFiles.getImageFileList(
+                HOME + "/image-shuffle/" + ControllerTop.genreChoice);
     }
 
     protected void setTopPage() {

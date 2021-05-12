@@ -7,12 +7,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imageshuffle.controller.ControllerTop">
    <children>
-      <Label layoutX="387.0" layoutY="206.0" text="Image Shuffle">
+      <Label layoutX="387.0" layoutY="127.0" text="Image Shuffle">
          <font>
             <Font size="64.0" />
          </font>
       </Label>
-      <Button layoutX="432.0" layoutY="490.0" mnemonicParsing="false" onAction="#toInput" text="データを入力する">
+      <Button layoutX="432.0" layoutY="507.0" mnemonicParsing="false" onAction="#toInput" text="データを入力する">
          <font>
             <Font size="36.0" />
          </font>
@@ -22,5 +22,15 @@
             <Font size="36.0" />
          </font>
       </Button>
+      <Button layoutX="414.0" layoutY="288.0" mnemonicParsing="false" onAction="#selectGenre" text="対象分野を選択する">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+      <Label fx:id="genrePrint" layoutX="822.0" layoutY="291.0" prefHeight="64.0" prefWidth="319.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

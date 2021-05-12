@@ -22,11 +22,10 @@ public class ImageFileList implements ImageFileListInterface {
         File imgDir = new File(imgDirPath);
         File[] imageFileArray = imgDir.listFiles(filter);
 
-        //画像のディレクトリやファイルがなければ強制終了
-        if (!imgDir.exists() || imageFileArray.length == 0) {
-            Util.printDialog("error",
-                    "imageファイルを正しく配置してください。\n " + "/user-home/image-shuffle/image");
-            logger.error("image directory or file is not found.");
+        //画像ファイルがなければ強制終了
+        if (imageFileArray.length == 0) {
+            Util.printDialog("error", "imageファイルを正しく配置してください。");
+            logger.error("image file is not found.");
             System.exit(0);
         }
 

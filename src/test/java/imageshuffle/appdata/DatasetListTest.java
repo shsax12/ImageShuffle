@@ -36,7 +36,7 @@ public class DatasetListTest {
         List<Dataset> datasetList = new ArrayList<>();
         datasetList.add(dataset);
 
-        String datasetListFilePath = System.getProperty("user.home") + "/image-shuffle/datasetlist_test.obj";
+        String datasetListFilePath = System.getProperty("user.home") + "/image-shuffle/test/datasetlist.obj";
         datasets.writeDatasetListFile(datasetList, datasetListFilePath);
 
         File outFile = new File(datasetListFilePath);

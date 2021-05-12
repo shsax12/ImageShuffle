@@ -21,6 +21,8 @@ public class ControllerOutput extends ControllerAbstract implements Initializabl
     private ImageView imgView;
     @FXML
     private Label imgText;
+    @FXML
+    private Label imgNo;
 
     private int countNext = 0;
 
@@ -36,6 +38,7 @@ public class ControllerOutput extends ControllerAbstract implements Initializabl
             Image image = new Image(imgFile.toURI().toURL().toString());
             imgView.setImage(image);
             imgText.setText("");
+            imgNo.setText((countNext/2 + 1) + "/" + imageFileList.size());
         } catch (MalformedURLException ex) {
             Util.printDialog("error", "予期しないエラーが発生しました。");
             logger.error("unexpected error.", ex);
@@ -51,6 +54,7 @@ public class ControllerOutput extends ControllerAbstract implements Initializabl
         if (idx > imageFileList.size()-1) {
             imgView.setImage(null);
             imgText.setText("");
+            imgNo.setText("");
             Util.printDialog("information", "テスト終了です。");
             return;
         }
